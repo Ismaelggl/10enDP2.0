@@ -14,6 +14,7 @@ public abstract class Passenger
     private String taxiName;
     private int arrivalTime;
     private int creditCard;
+    private Reliable reliable;
 
     /**
      * Constructor for objects of class Passenger
@@ -22,7 +23,7 @@ public abstract class Passenger
      * @param name The passenger's name
      * @throws NullPointerException If either location is null.
      */
-    public Passenger(Location pickup, Location destination, String name)
+    public Passenger(Location pickup, Location destination, String name, int creditCard)
     {
         if(pickup == null) {
             throw new NullPointerException("Pickup location");
@@ -34,6 +35,7 @@ public abstract class Passenger
         this.destination = destination;
         this.name = name;
         this.taxiName = "";
+        this.creditCard = creditCard;
     }
     
     /**
@@ -125,6 +127,38 @@ public abstract class Passenger
         pickup + " to " + destination;
     }
     
+    /**
+     * Decrement creditCard 
+     */
+    public void decrementCreditCard(int n)
+    {
+        creditCard -=n;
+    }
+    
+    /**
+     * Will increase the rating of the vehicle used
+     * with double its reliability value
+     * @return this reliability value.
+     */
+    public int calculateEvaluationValue(Taxi taxi)
+    {
+        return 0; //taxi.incrementValuation(taxi.getValuation);
+    }
+    
+    /**
+     * Pay the taxi driver the corresponding amount
+     */
+    public abstract void pay();
+    
+    /**
+     * After reaching the destination, the passenger pays and rates the taxi.
+     * @return calculateEvaluationValue().
+     */
+    public int act(Taxi taxi)
+    {
+        pay();
+        return  calculateEvaluationValue(taxi);
+    }
     
     /**
      * Show the final information about the passenger, including the name of the taxi that used.
@@ -134,10 +168,4 @@ public abstract class Passenger
         System.out.println("Passenger "+ getName() + " in " + destination + 
             " transported by: " + taxiName);
     }
-        public void act(){
-        //pay()
-        //int i=calculateEvaluationValue()
-        //return i;
-    }
-
 }
