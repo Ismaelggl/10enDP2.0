@@ -1,4 +1,4 @@
-
+ 
 /**
  * Enumeration class FuelConsumption - write a description of the enum class here
  *
