@@ -1,3 +1,5 @@
+
+import java.util.*;
 /**
  * Model the common elements of taxis and shuttles.
  * 
@@ -17,12 +19,17 @@ public class Taxi
     private int idleCount;
     //name of the taxi
     private String name;
-    //Person who is carried 
-    private Passenger passenger;
+    //Person who is carried
+    private TreeSet<Passenger> passengers;
+    //private Passenger passenger;
     //Number of passengers transported
     private int passengersTransported;
-    
-
+    //The average fuel consumption of the taxi.
+    private FuelConsumption fuelConsumption;
+    //Valuation of the passengers.
+    int valuation;
+    //Maximum occupation of the taxi.
+    int occupation;
     /**
      * Constructor of class Vehicle
      * @param company The taxi company. Must not be null.
@@ -42,8 +49,10 @@ public class Taxi
         targetLocation = null;
         idleCount = 0;
         this.name = name;
-        this.passenger = null;
+        this.passengers = new TreeSet<> (new ComparadorArrivalTimePassenger());
         this.passengersTransported = 0;  
+        this.valuation = 0;
+        this.occupation = 1;
     }
 
     /**
@@ -69,7 +78,15 @@ public class Taxi
      */
     public Passenger getPassenger()
     {
-        return passenger;
+        return passengers.first();
+    }
+    
+    /**
+     * Get the fuel consumption.
+     * @return The fuel consumption of the taxi.
+     */
+    public FuelConsumption obtainConsumption (){
+        return fuelConsumption;
     }
 
     /**
@@ -164,7 +181,7 @@ public class Taxi
      */
     public boolean isFree()
     {
-        return passenger == null;
+        return passengers.first() == null;
     }
 
     /**
@@ -192,9 +209,9 @@ public class Taxi
     public void pickup(Passenger passenger)
     {   
         if(passenger != null){
-        this.passenger = passenger;
+        this.passengers.add(passenger);
         this.targetLocation = passenger.getDestination();
-        this.passenger.setTaxiName(this.getName());
+        this.passengers.first().setTaxiName(this.getName());
         }
     }   
     
@@ -204,7 +221,7 @@ public class Taxi
     public void offloadPassenger()
     {
         this.targetLocation = null;
-        this.passenger = null;
+        this.passengers.remove(this.passengers.first());
     }
 
     /**
@@ -244,9 +261,9 @@ public class Taxi
             this.setLocation(location.nextLocation(targetLocation));
             System.out.println("@@@ Taxi: " + getName() + " moving to: " + getLocation().getX() + " - " + getLocation().getY());
             if(targetLocation.equals(location) ){
-                if (passenger != null){
-                    if(passenger.getDestination().equals(location) ){
-                    notifyPassengerArrival(passenger);
+                if (passengers.first() != null){
+                    if(passengers.first().getDestination().equals(location) ){
+                    notifyPassengerArrival(passengers.first());
                     offloadPassenger();
                     incrementPassengersTransported();
                     }

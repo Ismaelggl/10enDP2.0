@@ -33,8 +33,8 @@ public class PassengerTest
     {
         pickup = new Location(2,2);
         destination = new Location(5,1);
-        passenger1 = new Passenger(pickup,destination,"Neymar");
-        passenger2 = new Passenger(pickup,destination,"Neymar","Xavineta");
+        //passenger1 = new Passenger(pickup,destination,"Neymar");
+        //passenger2 = new Passenger(pickup,destination,"Neymar","Xavineta");
     }
 
     /**
