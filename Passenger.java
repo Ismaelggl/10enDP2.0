@@ -156,7 +156,8 @@ public abstract class Passenger
      */
     public int calculateEvaluationValue(Taxi taxi)
     {
-        return 0; //taxi.incrementValuation(taxi.getValuation);
+        taxi.incrementValuation(taxi.getValuation());
+        return taxi.getValuation();
     }
     
     /**

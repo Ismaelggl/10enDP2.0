@@ -1,4 +1,4 @@
-
+ 
 import java.util.*;
 /**
  * Model the common elements of taxis and shuttles.
@@ -268,6 +268,21 @@ public abstract class Taxi
      * Carry out a taxi's actions.
      */
     public abstract void act();
+    
+    /**
+     * Add to valuation n.
+     */
+    public void incrementValuation(int n)
+    {
+        valuation +=n;   
+    }
+    
+    /**
+     * @return valuation.
+     */   
+    public int getValuation(){
+        return valuation;
+    }
     
      /**
      * Return details of the taxi, such as where it is.

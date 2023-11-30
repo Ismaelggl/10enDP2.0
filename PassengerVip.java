@@ -29,7 +29,7 @@ public class PassengerVip extends Passenger
      * Increment his valuation in 15 and double his valuation
      */
     public int calculateEvaluationValue(Taxi taxi){
-        //taxi.incrementValuation(15);
-        return 0; //super.calculateEvaluationValue(taxi);
+        taxi.incrementValuation(15);
+        return super.calculateEvaluationValue(taxi);
     }
 }
