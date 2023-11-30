@@ -97,6 +97,13 @@ public abstract class Passenger
     }
     
     /**
+     * @return The passenger amount of money in the credit card.
+     */
+    public int getCreditCard(){
+        return creditCard;
+    }
+    
+    /**
      * Set the name of the passenger.
      */
     public void setName(String name){

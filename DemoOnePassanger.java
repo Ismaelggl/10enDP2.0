@@ -69,8 +69,8 @@ public class DemoOnePassanger
      * Taxis are created and added to the company
      */
     private void createTaxis() {
-        Taxi taxi = new Taxi(company, new Location(10, 10),"T1");
-        company.addVehicle(taxi);
+        //Taxi taxi = new Taxi(company, new Location(10, 10),"T1");
+        //company.addVehicle(taxi);
         actors.addAll(company.getVehicles());
     }
 
