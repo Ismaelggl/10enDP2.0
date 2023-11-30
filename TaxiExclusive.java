@@ -54,8 +54,8 @@ public class TaxiExclusive extends Taxi implements SerPopularEnRedes
            if(getTargetLocation().equals(getLocation()) ){
               if (getPassenger() != null){
                  if(getPassenger().getDestination().equals(getLocation()) ){
-                  modificarPopularidad();
                   notifyPassengerArrival(getPassenger());
+                  modificarPopularidad();
                   offloadPassenger();
                   incrementPassengersTransported();
                  }
