@@ -46,7 +46,7 @@ public abstract class Passenger
      * @param taxiName The taxi's name
      * @throws NullPointerException If either location is null.
      */
-    public Passenger(Location pickup, Location destination, String name, String taxiName){
+    public Passenger(Location pickup, Location destination, String name, String taxiName){ // PRIV: Creo que este constructor no se usa
         if(pickup == null) {
             throw new NullPointerException("Pickup location");
         }
