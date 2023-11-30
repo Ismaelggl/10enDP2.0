@@ -71,7 +71,7 @@ public class DemoAvanzada
      */
     private void createTaxis() {
 
-        Taxi taxi1 = new Taxi(company, new Location(10, 13),"T2");
+        /*Taxi taxi1 = new Taxi(company, new Location(10, 13),"T2");
         Taxi taxi2 = new Taxi(company, new Location(0, 0),"T1");
         Taxi taxi3 = new Taxi(company, new Location(16, 18),"T3");
         Taxi taxi4 = new Taxi(company, new Location(11, 1),"T5");
@@ -87,7 +87,7 @@ public class DemoAvanzada
         company.addVehicle(taxi5);
         company.addVehicle(taxi6);
         company.addVehicle(taxi7);
-        company.addVehicle(taxi8);
+        company.addVehicle(taxi8);*/
 
         actors.addAll(company.getVehicles());
     }

@@ -1,3 +1,5 @@
+
+import java.util.*;
 /**
  * Model the common elements of taxis and shuttles.
  * 
@@ -5,24 +7,31 @@
  * @version 2016.02.29
  * @version 2023.10.10 DP classes 
  */
-public class Taxi 
+public abstract class Taxi 
 {
     // The Taxi Company of this Taxi.
     private TransportCompany company;
     // Where the vehicle is.
     private Location location;
+    // Where the vehicle was created
+    private Location initialLocation;
     // Where the vehicle is headed.
     private  Location targetLocation;
     // Record how often the vehicle has nothing to do.
     private int idleCount;
     //name of the taxi
     private String name;
-    //Person who is carried 
-    private Passenger passenger;
+    //Person who is carried
+    private TreeSet<Passenger> passengers;
+    //private Passenger passenger;
     //Number of passengers transported
     private int passengersTransported;
-    
-
+    //The average fuel consumption of the taxi.
+    private FuelConsumption fuelConsumption;
+    //Valuation of the passengers.
+    int valuation;
+    //Maximum occupation of the taxi.
+    int occupation;
     /**
      * Constructor of class Vehicle
      * @param company The taxi company. Must not be null.
@@ -38,12 +47,16 @@ public class Taxi
             throw new NullPointerException("location");
         }
         this.company = company;
+        this.initialLocation = location;
         this.location = location;
         targetLocation = null;
         idleCount = 0;
         this.name = name;
-        this.passenger = null;
+        this.passengers = new TreeSet<> (new ComparadorArrivalTimePassenger());
         this.passengersTransported = 0;  
+        this.valuation = 0;
+        this.occupation = 1;
+        fuelConsumption = fuelConsumption.MEDIA;
     }
 
     /**
@@ -64,13 +77,32 @@ public class Taxi
     }
     
     /**
+     * Get the initial location.
+     * @return Where this taxi was created.
+     */
+    public Location getInitialLocation()
+    {
+        return initialLocation;
+    }
+    
+    /**
      * Get the passenger.
      * @return The passenger who is being transported.
      */
     public Passenger getPassenger()
     {
-        return passenger;
+        return passengers.first();
     }
+    
+    /**
+     * Get the fuel consumption.
+     * @return The fuel consumption of the taxi.
+     */
+    public FuelConsumption getFuel (){
+        return fuelConsumption;
+    }
+    
+    public abstract int obtainConsumption ();
 
     /**
      * Set the current location.
@@ -164,7 +196,7 @@ public class Taxi
      */
     public boolean isFree()
     {
-        return passenger == null;
+        return passengers.first() == null;
     }
 
     /**
@@ -192,9 +224,9 @@ public class Taxi
     public void pickup(Passenger passenger)
     {   
         if(passenger != null){
-        this.passenger = passenger;
+        this.passengers.add(passenger);
         this.targetLocation = passenger.getDestination();
-        this.passenger.setTaxiName(this.getName());
+        this.passengers.first().setTaxiName(this.getName());
         }
     }   
     
@@ -204,7 +236,7 @@ public class Taxi
     public void offloadPassenger()
     {
         this.targetLocation = null;
-        this.passenger = null;
+        this.passengers.remove(this.passengers.first());
     }
 
     /**
@@ -235,28 +267,7 @@ public class Taxi
     /**
      * Carry out a taxi's actions.
      */
-    public void act()
-    {
-    
-            if(targetLocation == null){
-             idleCount++;
-            }else{
-            this.setLocation(location.nextLocation(targetLocation));
-            System.out.println("@@@ Taxi: " + getName() + " moving to: " + getLocation().getX() + " - " + getLocation().getY());
-            if(targetLocation.equals(location) ){
-                if (passenger != null){
-                    if(passenger.getDestination().equals(location) ){
-                    notifyPassengerArrival(passenger);
-                    offloadPassenger();
-                    incrementPassengersTransported();
-                    }
-                }
-                else{
-                    notifyPickupArrival();
-                }
-    }
-    }
-    }
+    public abstract void act();
     
      /**
      * Return details of the taxi, such as where it is.

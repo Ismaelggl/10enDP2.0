@@ -11,7 +11,7 @@ import org.junit.Test;
  * @version 2023.10.10 DP classes 
  */
 public class TaxiTest
-{
+{//comentario de prueba para push 29/11/23
     private Taxi taxi1;
     private Passenger passenger1;
     private Taxi taxi2;
@@ -40,7 +40,7 @@ public class TaxiTest
         Location destination1 = new Location(5, 6);
 
         //passenger1 = new Passenger(pickup1, destination1,"Kevin");
-        taxi1 = new Taxi(company, taxi1Location,"T1");
+        //taxi1 = new Taxi(company, taxi1Location,"T1");
         
         // Starting position for the taxi2.
         Location taxi2Location = new Location(13, 4);
@@ -49,7 +49,7 @@ public class TaxiTest
         Location destination2 = new Location(1, 14);
 
        // passenger2 = new Passenger(pickup2, destination2,"Parrales");
-        taxi2 = new Taxi(company, taxi2Location,"T2");
+        //taxi2 = new Taxi(company, taxi2Location,"T2");
     }
 
     /**

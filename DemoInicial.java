@@ -70,7 +70,7 @@ public class DemoInicial
      */
     private void createTaxis() {
 
-        Taxi taxi1 = new Taxi(company, new Location(3, 3),"T2");
+        /*Taxi taxi1 = new Taxi(company, new Location(3, 3),"T2");
         Taxi taxi2 = new Taxi(company, new Location(10, 10),"T1");
         Taxi taxi3 = new Taxi(company, new Location(12, 14),"T3");
        
@@ -78,7 +78,7 @@ public class DemoInicial
         company.addVehicle(taxi2);
         company.addVehicle(taxi3);
  
-        actors.addAll(company.getVehicles());
+        actors.addAll(company.getVehicles());*/
     }
 
     /**
