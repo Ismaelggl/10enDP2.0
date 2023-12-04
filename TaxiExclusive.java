@@ -28,10 +28,18 @@ public class TaxiExclusive extends Taxi implements SerPopularEnRedes
         return (getFuel().getValor())*getInitialLocation().distance(getLocation());
     }
     
+     /**
+     * Get the taxi weight.
+     * @return The taxi weight.
+     */
+    public int getWeight(){
+        return weight;
+    }
+    
     /**
      * Calculates the new popularity given from the passenger.
      */
-    @Override
+    //PRIV: He quitado el override (Samuel)
     public void modificarPopularidad(){
         if (getPassenger().getCreditCard() > 20000){
             popularidad += 4;
@@ -54,8 +62,8 @@ public class TaxiExclusive extends Taxi implements SerPopularEnRedes
            if(getTargetLocation().equals(getLocation()) ){
               if (getPassenger() != null){
                  if(getPassenger().getDestination().equals(getLocation()) ){
-                  modificarPopularidad();
                   notifyPassengerArrival(getPassenger());
+                  modificarPopularidad();
                   offloadPassenger();
                   incrementPassengersTransported();
                  }
