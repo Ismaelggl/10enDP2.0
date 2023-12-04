@@ -95,6 +95,14 @@ public abstract class Taxi
     }
     
     /**
+     * @return The maximum occupation of the taxi.
+     */
+    public int getOccupation()
+    {
+        return occupation;
+    }
+    
+    /**
      * Get the fuel consumption.
      * @return The fuel consumption of the taxi.
      */

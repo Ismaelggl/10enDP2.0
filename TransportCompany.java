@@ -16,7 +16,7 @@ public class TransportCompany
     //Company passengers arranged in alphabetical order
     private ArrayList<Passenger> passengers;
     //Assignaments between passengers and taxis
-    private Map<Taxi, Passenger> assignments;
+    private Map<Taxi, List<Passenger>> assignments;
     /**
      * Constructor for objects of class TransportCompany
      */
@@ -39,7 +39,7 @@ public class TransportCompany
     /**
      * @return The asignments between passengers and taxis.
      */
-    public Map<Taxi, Passenger> getAssignments ()
+    public Map<Taxi, List<Passenger>> getAssignments ()
     {
         return assignments;
     }
@@ -52,10 +52,20 @@ public class TransportCompany
     public void arrivedAtDestination(Taxi vehicle,
     Passenger passenger)
     {
-        if(vehicle.getLocation().equals( passenger.getDestination() )){
-        System.out.println(">>>> Taxi " + vehicle.getName() +" at " + vehicle.getLocation() +
-        " offloads Passenger " + passenger.getName() + " travelling from " +
-        passenger.getPickup()  + " to " + passenger.getDestination() );
+        if(vehicle.getLocation().equals(passenger.getDestination() )){
+            System.out.println(">>>> Taxi " + vehicle.getName() +" at " + vehicle.getLocation() +
+            " offloads Passenger " + passenger.getName() + " travelling from " +
+            passenger.getPickup()  + " to " + passenger.getDestination() );
+            passenger.act(vehicle);//Puntua al taxi
+            //Eliminamos el pasajero
+            List<Passenger> passengers = assignments.getOrDefault(vehicle, new ArrayList<>());
+            assignments.remove(vehicle);//Eliminamos temporalmente la asignacion
+            passengers.remove(0);
+            assignments.put(vehicle, passengers);
+            //Si hay más pasajeros asignamos el siguiente
+            if(!passengers.isEmpty()){
+                vehicle.setTargetLocation(passengers.get(0).getDestination());
+            }
         }
     }
 
@@ -98,16 +108,21 @@ public class TransportCompany
      * @param location location to go
      * @return A free vehicle, or null if there is none.
      */
-    private Taxi scheduleVehicle(Location location)
+    private Taxi scheduleVehicle(Passenger passenger)
     {
+        Location pickup = passenger.getPickup();
         boolean salir=false;
         Iterator<Taxi> it = this.vehicles.iterator();
         Taxi taxi = null;
-        //Asignamos la localización a los taxis libres
+        //Ponemos la localizacion objetivo a los taxis para ordenar los taxis por cercania
         while(it.hasNext()){
            Taxi aux = it.next();
-            if(aux.isFree() && assignments.get(aux) == null) 
-                aux.setPickupLocation(location);
+            if(aux.isFree() && assignments.get(aux) == null){
+                aux.setPickupLocation(passenger.getPickup()); 
+            }else{ //Si passengerNoVIP
+                  if(passenger.getCreditCard()<=20000 && aux.passengersTransported() < aux.getOccupation())
+                    aux.setPickupLocation(passenger.getPickup());
+                }
         }
         // Creamos un nuevo iterador para recorrer nuevamente la lista ordenada
         //Ordenamos vehicles por distancia al objetivo
@@ -120,14 +135,22 @@ public class TransportCompany
                 if(aux.isFree() && assignments.get(aux) == null){
                     salir = true;
                     taxi = aux;
-                    aux.setPickupLocation(location);
+                    aux.setPickupLocation(passenger.getPickup());
+                 }else{ //Si passengerNoVIP
+                  if(passenger.getCreditCard()<20000 &&
+                  aux.passengersTransported() < aux.getOccupation()){
+                    salir = true;
+                    taxi = aux;
+                    aux.setPickupLocation(passenger.getPickup());
                   }
+                }
         }
+        //Reseteamos localizaciones de taxis libres
         while (it.hasNext()){
             aux=it.next();
             if (assignments.get(aux) == null){
-            aux.setPickupLocation(null);
-        }
+                aux.setPickupLocation(null);
+            }
         }
         //Sino hay taxis libres devolvemos nulo para poder comprobralo
         return taxi;
@@ -142,17 +165,26 @@ public class TransportCompany
     {
         Taxi taxi;
         boolean salir = true;
-        taxi = scheduleVehicle(passenger.getPickup() );
-        if(taxi != null && assignments.get(taxi) == null){
-        taxi.setPickupLocation(passenger.getPickup() );
-        assignments.put(taxi, passenger);//Asigna un taxi a un pasajero (Map)
-        System.out.println("<<<< Taxi " + taxi.getName() + " at " + taxi.getLocation() + " go to pick up passenger " + passenger.getName() + " at " 
-            + passenger.getPickup());
-        }
-
-        else{
-            salir = false;
-        }
+        List<Passenger> currentPassengers;
+        taxi = scheduleVehicle(passenger);
+        //Si no hay taxis libres devolvemos falso y terminamos
+        if(taxi==null){
+            salir=false;
+        }else{
+           //Si no existe la asignacion creamos una lista sino la devolvemos
+              if(assignments.get(taxi) == null){
+              currentPassengers = new ArrayList<>();
+            }else{
+              currentPassengers = assignments.getOrDefault(taxi, new ArrayList<>());
+              assignments.remove(taxi);//Eliminamos temporalmente la asignacion
+            }
+            currentPassengers.add(passenger);
+            //Ordeno y marco destino
+            Collections.sort(currentPassengers, new ComparadorArrivalTimePassenger());
+            taxi.setTargetLocation(currentPassengers.get(0).getDestination());
+            // Asocia la lista actualizada de pasajeros con el taxi en el mapa
+            assignments.put(taxi, currentPassengers); 
+            }
         return salir;
     }
 
@@ -163,13 +195,14 @@ public class TransportCompany
     public void arrivedAtPickup(Taxi taxi)
     {
         // Obtén el pasajero asignado al taxi
-        Passenger passenger = assignments.get(taxi);
-        taxi.pickup(passenger);
-        System.out.println("<<<< "+taxi + " picks up " + passenger.getName());
-        //Se elimina la asignacion
-        assignments.remove(taxi);
-        passenger.setTaxiName(taxi.getName() );
-        
+        List<Passenger> passengers = assignments.getOrDefault(taxi, new ArrayList<>());
+        if(taxi.getLocation().equals(passengers.get(0).getPickup()) ){
+            taxi.pickup(passengers.get(0));
+            System.out.println("<<<< "+taxi + " picks up " + passengers.get(0).getName());
+            //Se elimina la asignacion
+            assignments.remove(taxi);
+            passengers.get(0).setTaxiName(taxi.getName() );
+        }
     }
 
 }
