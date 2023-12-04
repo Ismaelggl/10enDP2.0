@@ -65,6 +65,7 @@ public class TransportCompany
             //Si hay más pasajeros asignamos el siguiente
             if(!passengers.isEmpty()){
                 vehicle.setTargetLocation(passengers.get(0).getDestination());
+                
             }
         }
     }
