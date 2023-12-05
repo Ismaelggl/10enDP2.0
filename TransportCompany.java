@@ -16,7 +16,7 @@ public class TransportCompany
     //Company passengers arranged in alphabetical order
     private ArrayList<Passenger> passengers;
     //Assignaments between passengers and taxis
-    private Map<Taxi, List<Passenger>> assignments;
+    private Map<Taxi, TreeSet<Passenger>> assignments;
     /**
      * Constructor for objects of class TransportCompany
      */
@@ -39,7 +39,7 @@ public class TransportCompany
     /**
      * @return The asignments between passengers and taxis.
      */
-    public Map<Taxi, List<Passenger>> getAssignments ()
+    public Map<Taxi, TreeSet<Passenger>> getAssignments ()
     {
         return assignments;
     }
@@ -60,7 +60,9 @@ public class TransportCompany
             //Eliminamos el pasajero
             //vehicle.offloadPassenger();
             //Si hay más pasajeros asignamos el siguiente
-            
+            Passenger next=vehicle.getPassenger();
+            if(next != null)
+            vehicle.setTargetLocation(next.getDestination());
         }
     }
 
@@ -143,8 +145,7 @@ public class TransportCompany
                     salir = true;
                     aux.setPickupLocation(passenger.getPickup());
                     aux.addPassenger(passenger);
-                    taxi = aux;
-                    
+                    taxi = aux;      
                   }
                 }
         }
@@ -172,7 +173,7 @@ public class TransportCompany
     {
         Taxi taxi;
         boolean salir = true;
-        List<Passenger> currentPassengers;
+        TreeSet<Passenger> currentPassengers;
         taxi = scheduleVehicle(passenger);
         //Si no hay taxis libres devolvemos falso y terminamos
         if(taxi==null){
@@ -180,15 +181,14 @@ public class TransportCompany
         }else{
            //Si no existe la asignacion creamos una lista sino la devolvemos
               if(assignments.get(taxi) == null){
-              currentPassengers = new ArrayList<>();
+              currentPassengers = new TreeSet<> (new ComparadorArrivalTimePassenger());
             }else{
-              currentPassengers = assignments.getOrDefault(taxi, new ArrayList<>());
-              assignments.remove(taxi);//Eliminamos temporalmente la asignacion
+              currentPassengers = assignments.remove(taxi);
+              //Eliminamos temporalmente la asignacion
             }
             currentPassengers.add(passenger);
-            //Ordeno y marco destino
-            Collections.sort(currentPassengers, new ComparadorArrivalTimePassenger());
-            taxi.setTargetLocation(currentPassengers.get(0).getPickup());
+            //Marco destino
+            taxi.setTargetLocation(currentPassengers.first().getPickup());
             // Asocia la lista actualizada de pasajeros con el taxi en el mapa
             assignments.put(taxi, currentPassengers); 
             }
@@ -202,15 +202,15 @@ public class TransportCompany
     public void arrivedAtPickup(Taxi taxi)
     {
         // Obtén el pasajero asignado al taxi
-        List<Passenger> passengers = assignments.getOrDefault(taxi, new ArrayList<>() );
-        
-        if(taxi.getLocation().equals(passengers.get(0).getPickup()) ){
-            taxi.pickup(passengers.get(0));
-            System.out.println("<<<< "+taxi + " picks up " + passengers.get(0).getName());
+        TreeSet<Passenger> passengers = assignments.get(taxi);        
+        if(taxi.getLocation().equals(passengers.first().getPickup()) ){
+            assignments.remove(taxi);
+            Passenger passenger = passengers.pollFirst();
+            taxi.pickup(passenger);
+            System.out.println("<<<< "+taxi + " picks up " + passenger.getName());
             //Se elimina la asignacion
-            //passengers = assignments.remove(taxi);
-            assignments.remove(passengers.get(0));
-            passengers.remove(0);
+            //assignments.remove(passenger);
+            //passengers.remove(0);
             //taxi.removePassenger();
             assignments.put(taxi, passengers);
         }
@@ -218,5 +218,7 @@ public class TransportCompany
     public void showFinalInfo(){
         Collections.sort(vehicles, new ComparadorIdlCountTaxi());
         vehicles.get(0).showFinalInfo();
+        Collections.sort(vehicles, new ComparadorValoracionTaxi());
+        vehicles.get(0).showFinalInfo();    
     }
 }

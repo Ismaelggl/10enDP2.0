@@ -1,4 +1,4 @@
-/**
+    /**
  * Model a passenger wishing to get from one
  * location to another.
  * 
@@ -182,7 +182,8 @@ public abstract class Passenger
      */
     public void showFinalInfo()
     {
-        System.out.println("Passenger "+ getName() + " in " + destination + 
-            " transported by: " + taxiName);
+        System.out.println( getClass() + getName() + " in " + destination.toString() + 
+            " transported by: " + taxiName + " with " + creditCard
+            +" money in the credit card");
     }
 }

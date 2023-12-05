@@ -13,9 +13,8 @@ public class ComparadorIdlCountTaxi implements Comparator<Taxi>
     {
         int IdlCount1 = tx1.getValuation();
         int IdlCount2 = tx2.getValuation();
-        ComparadorValoracionTaxi CompValoracion = new ComparadorValoracionTaxi();
         if(IdlCount1 == IdlCount2){
-            return CompValoracion.compare(tx1,tx2);
+            return 0;
         }else if(IdlCount1 > IdlCount2){
             return 1;
         }else
