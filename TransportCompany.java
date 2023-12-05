@@ -59,10 +59,6 @@ public class TransportCompany
             passenger.act(vehicle);//Puntua al taxi
             //Eliminamos el pasajero
             vehicle.offloadPassenger();
-            List<Passenger> passengers = assignments.getOrDefault(vehicle, new ArrayList<>());
-            assignments.remove(vehicle);//Eliminamos temporalmente la asignacion
-            passengers.remove(0);
-            assignments.put(vehicle, passengers);
             //Si hay más pasajeros asignamos el siguiente
             if(!passengers.isEmpty()){
                 vehicle.setTargetLocation(passengers.get(0).getDestination());
@@ -183,7 +179,7 @@ public class TransportCompany
             currentPassengers.add(passenger);
             //Ordeno y marco destino
             Collections.sort(currentPassengers, new ComparadorArrivalTimePassenger());
-            taxi.setTargetLocation(currentPassengers.get(0).getDestination());
+            taxi.setTargetLocation(currentPassengers.get(0).getPickup());
             // Asocia la lista actualizada de pasajeros con el taxi en el mapa
             assignments.put(taxi, currentPassengers); 
             }

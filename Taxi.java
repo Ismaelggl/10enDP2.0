@@ -92,7 +92,12 @@ public abstract class Taxi
      */
     public Passenger getPassenger()
     {
+        if (!isFree()){
         return passengers.first();
+        }   
+        else{
+            return null;
+        }
     }
     
     /**
@@ -205,7 +210,7 @@ public abstract class Taxi
      */
     public boolean isFree()
     {
-        return passengers.first() == null;
+        return passengers.isEmpty();
     }
 
     /**
