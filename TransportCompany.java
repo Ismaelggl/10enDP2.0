@@ -16,7 +16,7 @@ public class TransportCompany
     //Company passengers arranged in alphabetical order
     private ArrayList<Passenger> passengers;
     //Assignaments between passengers and taxis
-    private Map<Taxi, List<Passenger>> assignments;
+    private Map<Taxi, TreeSet<Passenger>> assignments;
     /**
      * Constructor for objects of class TransportCompany
      */
@@ -39,7 +39,7 @@ public class TransportCompany
     /**
      * @return The asignments between passengers and taxis.
      */
-    public Map<Taxi, List<Passenger>> getAssignments ()
+    public Map<Taxi, TreeSet<Passenger>> getAssignments ()
     {
         return assignments;
     }
@@ -57,12 +57,6 @@ public class TransportCompany
             " offloads Passenger " + passenger.getName() + " travelling from " +
             passenger.getPickup()  + " to " + passenger.getDestination() );
             passenger.act(vehicle);//Puntua al taxi
-            //Eliminamos el pasajero
-            vehicle.offloadPassenger();
-            List<Passenger> passengers = assignments.getOrDefault(vehicle, new ArrayList<>());
-            assignments.remove(vehicle);//Eliminamos temporalmente la asignacion
-            passengers.remove(0);
-            assignments.put(vehicle, passengers);
             //Si hay más pasajeros asignamos el siguiente
             if(!passengers.isEmpty()){
                 vehicle.setTargetLocation(passengers.get(0).getDestination());
@@ -137,20 +131,18 @@ public class TransportCompany
                 if(aux.isFree() && assignments.get(aux) == null){
                     salir = true;
                     taxi = aux;
-                    aux.setPickupLocation(passenger.getPickup());
                  }else{ //Si passengerNoVIP
                   if(passenger.getCreditCard()<20000 &&
                   aux.passengersTransported() < aux.getOccupation()){
                     salir = true;
                     taxi = aux;
-                    aux.setPickupLocation(passenger.getPickup());
-                  }
+                  } 
                 }
         }
         //Reseteamos localizaciones de taxis libres
         while (it.hasNext()){
             aux=it.next();
-            if (assignments.get(aux) == null){
+            if (!taxi){
                 aux.setPickupLocation(null);
             }
         }
@@ -183,7 +175,7 @@ public class TransportCompany
             currentPassengers.add(passenger);
             //Ordeno y marco destino
             Collections.sort(currentPassengers, new ComparadorArrivalTimePassenger());
-            taxi.setTargetLocation(currentPassengers.get(0).getDestination());
+            taxi.setTargetLocation(currentPassengers.get.getPickup());
             // Asocia la lista actualizada de pasajeros con el taxi en el mapa
             assignments.put(taxi, currentPassengers); 
             }
