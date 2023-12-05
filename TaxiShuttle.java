@@ -11,9 +11,9 @@ public class TaxiShuttle extends Taxi
     /**
      * Constructor for objects of class TaxiShuttle
      */
-    public TaxiShuttle(TransportCompany company, Location location, String name)
+    public TaxiShuttle(TransportCompany company, Location location, String name, FuelConsumption fuelConsumption, int idleCount)
     {
-        super(company, location, name);
+        super(company, location, name, fuelConsumption, idleCount);
     }
 
     /**

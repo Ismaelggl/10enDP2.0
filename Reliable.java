@@ -7,8 +7,8 @@
  */
 public enum Reliable
 {
-    BAJA("LOW",5),
-    ALTA("HIGH",10);
+    LOW("LOW",5),
+    HIGH("HIGH",10);
     
     private final String nombre;
     private final int valor;

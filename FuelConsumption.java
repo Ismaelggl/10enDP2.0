@@ -7,9 +7,9 @@
  */
 public enum FuelConsumption
 {
-    ALTA ("HIGH", 8),
-    MEDIA ("MEDIUM", 6),
-    BAJA("LOW", 4);
+    HIGH ("HIGH", 8),
+    MEDIUM ("MEDIUM", 6),
+    LOW ("LOW", 4);
     
     private final String nombre;
     private final int valor;

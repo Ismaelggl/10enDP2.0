@@ -38,7 +38,7 @@ public abstract class Taxi
      * @param location The vehicle's starting point. Must not be null.
      * @throws NullPointerException If company or location is null.
      */
-    public Taxi(TransportCompany company, Location location, String name)
+    public Taxi(TransportCompany company, Location location, String name, FuelConsumption fuelConsumption, int idleCount)
     {
         if(company == null) {
             throw new NullPointerException("company");
@@ -50,13 +50,13 @@ public abstract class Taxi
         this.initialLocation = location;
         this.location = location;
         targetLocation = null;
-        idleCount = 0;
+        this.idleCount = idleCount;
         this.name = name;
         this.passengers = new TreeSet<> (new ComparadorArrivalTimePassenger());
         this.passengersTransported = 0;  
         this.valuation = 0;
         this.occupation = 1;
-        fuelConsumption = fuelConsumption.MEDIA;
+        this.fuelConsumption = fuelConsumption;
     }
 
     

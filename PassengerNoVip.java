@@ -10,9 +10,9 @@ public class PassengerNoVip extends Passenger
     /**
      * Constructor for objects of class Passenger
      */
-    public PassengerNoVip(Location pickup, Location destination, String name, int creditCard)
+    public PassengerNoVip(Location pickup, Location destination, String name, int arrivalTime, int creditCard, Reliable reliable)
     {
-        super(pickup,destination,name,creditCard);
+        super(pickup,destination,name,arrivalTime, creditCard, reliable);
     }
     
     /**
