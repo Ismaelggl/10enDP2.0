@@ -179,7 +179,7 @@ public class TransportCompany
             taxi.setTargetLocation(currentPassengers.get.getPickup());
             taxi.setTargetLocation(currentPassengers.get(0).getPickup());
             // Asocia la lista actualizada de pasajeros con el taxi en el mapa
-            assignments.put(taxi, currentPassengers); 
+            assignments.put(taxi,   ); 
             }
         return salir;
     }
