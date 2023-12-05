@@ -59,6 +59,7 @@ public abstract class Taxi
         fuelConsumption = fuelConsumption.MEDIA;
     }
 
+    
     /**
      * @return the name of the taxi
      */
