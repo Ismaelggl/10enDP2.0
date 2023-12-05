@@ -107,17 +107,17 @@ public class TransportCompany
      */
     private Taxi scheduleVehicle(Passenger passenger)
     {
-        Location pickup = passenger.getPickup();
         boolean salir=false;
+        boolean EsVip = passenger.getCreditCard()>20000;
         Iterator<Taxi> it = this.vehicles.iterator();
         Taxi taxi = null;
         //Ponemos la localizacion objetivo a los taxis para ordenar los taxis por cercania
+        //Ponemos la localizacion a los taxis libres si el pasaje
         while(it.hasNext()){
            Taxi aux = it.next();
-            if(aux.isFree() && assignments.get(aux) == null){
-                aux.setPickupLocation(passenger.getPickup()); 
-            }else{ //Si passengerNoVIP
-                  if(passenger.getCreditCard()<=20000 && aux.passengersTransported() < aux.getOccupation())
+               //Si es VIP el taxi debe estar Vacio y ser Exclusive
+                if(aux.isFree() && aux.isExclusive() ||!aux.isFull())
+                {
                     aux.setPickupLocation(passenger.getPickup());
                 }
         }
@@ -129,22 +129,39 @@ public class TransportCompany
         it = this.vehicles.iterator();
         while (it.hasNext() && !salir){
                 aux = it.next();
-                if(aux.isFree() && assignments.get(aux) == null){
-                    salir = true;
-                    taxi = aux;
-                 }else{ //Si passengerNoVIP
-                  if(passenger.getCreditCard()<20000 &&
-                  aux.passengersTransported() < aux.getOccupation()){
-                    salir = true;
-                    taxi = aux;
-                  } 
+            if(EsVip)
+            {   //Si es VIP el taxi debe estar Vacio y ser Exclusive
+                if(aux.isFree() && aux.getOccupation() == 1)
+                {
+                    salir=true;
+                    taxi=aux;
                 }
+            }else{
+                //Sino es VIP el taxi no puede estar lleno
+                if(!aux.isFull())
+                {
+                    salir=true;
+                    taxi=aux;
+                }
+            }
         }
         //Reseteamos localizaciones de taxis libres
         while (it.hasNext()){
             aux=it.next();
-            if (!taxi){
-                aux.setPickupLocation(null);
+            //Si es VIP el taxi debe estar Vacio y ser Exclusive
+            if(aux.isFree())
+            {
+                aux.setTargetLocation(null);
+            }
+            //Sino es VIP el taxi no puede estar lleno
+            if(!aux.isFull())
+            {
+              if(!assignments.containsKey(aux))
+              {
+                aux.setTargetLocation(null);
+              }else{
+                aux.setTargetLocation(assignments.get(aux).first().getPickup());
+              }
             }
         }
         //Sino hay taxis libres devolvemos nulo para poder comprobralo
@@ -160,26 +177,24 @@ public class TransportCompany
     {
         Taxi taxi;
         boolean salir = true;
-        List<Passenger> currentPassengers;
         taxi = scheduleVehicle(passenger);
+        TreeSet<Passenger> TreePassengers;
         //Si no hay taxis libres devolvemos falso y terminamos
         if(taxi==null){
             salir=false;
         }else{
            //Si no existe la asignacion creamos una lista sino la devolvemos
               if(assignments.get(taxi) == null){
-              currentPassengers = new ArrayList<>();
+              TreePassengers = new TreeSet<> (new ComparadorArrivalTimePassenger());
             }else{
-              currentPassengers = assignments.getOrDefault(taxi, new ArrayList<>());
-              assignments.remove(taxi);//Eliminamos temporalmente la asignacion
+            TreePassengers = assignments.remove(taxi);              
+            //Eliminamos temporalmente la asignacion
             }
-            currentPassengers.add(passenger);
+            TreePassengers.add(passenger);
             //Ordeno y marco destino
-            Collections.sort(currentPassengers, new ComparadorArrivalTimePassenger());
-            taxi.setTargetLocation(currentPassengers.get.getPickup());
-            taxi.setTargetLocation(currentPassengers.get(0).getPickup());
+            taxi.setTargetLocation(TreePassengers.first().getPickup());
             // Asocia la lista actualizada de pasajeros con el taxi en el mapa
-            assignments.put(taxi,   ); 
+            assignments.put(taxi, TreePassengers); 
             }
         return salir;
     }
@@ -191,12 +206,14 @@ public class TransportCompany
     public void arrivedAtPickup(Taxi taxi)
     {
         // Obtén el pasajero asignado al taxi
-        List<Passenger> passengers = assignments.getOrDefault(taxi, new ArrayList<>());
-        if(taxi.getLocation().equals(passengers.get(0).getPickup()) ){
-            taxi.pickup(passengers.get(0));
-            System.out.println("<<<< "+taxi + " picks up " + passengers.get(0).getName());
-            //Se elimina la asignacion
+        TreeSet<Passenger> passengers = assignments.get(taxi);
+        if(taxi.getLocation().equals(passengers.first().getPickup()) ){
             assignments.remove(taxi);
+            Passenger passenger = passengers.pollFirst();
+            taxi.pickup(passenger);
+            System.out.println("<<<< "+taxi + " picks up " + passenger.getName());
+            //Se elimina la asignacion
+            assignments.put(taxi,passengers);
         }
     }
     public void showFinalInfo(){

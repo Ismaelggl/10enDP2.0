@@ -55,7 +55,7 @@ public abstract class Taxi
         this.passengers = new TreeSet<> (new ComparadorArrivalTimePassenger());
         this.passengersTransported = 0;  
         this.valuation = valuation;
-        this.occupation = 1;
+        this.occupation = 4;
         this.fuelConsumption = fuelConsumption;
     }
 
@@ -211,6 +211,15 @@ public abstract class Taxi
     public boolean isFree()
     {
         return passengers.isEmpty();
+    }
+    
+    public boolean isExclusive()
+    {
+        return occupation == 1;
+    }
+
+    public boolean isFull(){
+        return occupation == passengers.size();
     }
 
     /**

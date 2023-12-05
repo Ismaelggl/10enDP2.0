@@ -18,6 +18,7 @@ public class TaxiExclusive extends Taxi implements SerPopularEnRedes
         super(company, location, name,fuelConsumption, idleCount);
         weight = 0;
         popularidad = 6;
+        this.occupation = 1;
     }
     
     /**
