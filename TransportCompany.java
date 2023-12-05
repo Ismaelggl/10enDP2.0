@@ -58,7 +58,6 @@ public class TransportCompany
             passenger.getPickup()  + " to " + passenger.getDestination() );
             passenger.act(vehicle);//Puntua al taxi
             //Eliminamos el pasajero
-            vehicle.offloadPassenger();
             //Si hay más pasajeros asignamos el siguiente
             if(!passengers.isEmpty()){
                 vehicle.setTargetLocation(passengers.get(0).getDestination());
