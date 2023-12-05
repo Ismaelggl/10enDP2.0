@@ -38,7 +38,7 @@ public abstract class Taxi
      * @param location The vehicle's starting point. Must not be null.
      * @throws NullPointerException If company or location is null.
      */
-    public Taxi(TransportCompany company, Location location, String name, FuelConsumption fuelConsumption, int idleCount)
+    public Taxi(TransportCompany company, Location location, String name, FuelConsumption fuelConsumption, int valuation)
     {
         if(company == null) {
             throw new NullPointerException("company");
@@ -50,11 +50,11 @@ public abstract class Taxi
         this.initialLocation = location;
         this.location = location;
         targetLocation = null;
-        this.idleCount = idleCount;
+        this.idleCount = 0;
         this.name = name;
         this.passengers = new TreeSet<> (new ComparadorArrivalTimePassenger());
         this.passengersTransported = 0;  
-        this.valuation = 0;
+        this.valuation = valuation;
         this.occupation = 1;
         this.fuelConsumption = fuelConsumption;
     }
@@ -92,7 +92,12 @@ public abstract class Taxi
      */
     public Passenger getPassenger()
     {
+        if (!isFree()){
         return passengers.first();
+        }   
+        else{
+            return null;
+        }
     }
     
     /**
@@ -205,7 +210,7 @@ public abstract class Taxi
      */
     public boolean isFree()
     {
-        return passengers.first() == null;
+        return passengers.isEmpty();
     }
 
     /**
@@ -233,9 +238,9 @@ public abstract class Taxi
     public void pickup(Passenger passenger)
     {   
         if(passenger != null){
-        this.passengers.add(passenger);
         this.targetLocation = passenger.getDestination();
-        this.passengers.first().setTaxiName(this.getName());
+        passenger.setTaxiName(this.getName());
+        this.passengers.add(passenger);
         }
     }   
     
@@ -245,7 +250,7 @@ public abstract class Taxi
     public void offloadPassenger()
     {
         this.targetLocation = null;
-        this.passengers.remove(this.passengers.first());
+        this.passengers.pollFirst();
     }
 
     /**
