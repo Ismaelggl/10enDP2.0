@@ -45,16 +45,16 @@ public class TaxiTest
         
         // Locations for the passengerV.
       
-        passengerV = new PassengerVip(pickup1, destination1,"Ana Botín", 25000);
-        taxiEx = new TaxiExclusive(company, taxiExLocation,"T1");
+        passengerV = new PassengerVip(pickup1, destination1,"Ana Botín", 30, 25000, Reliable.LOW);
+        taxiEx = new TaxiExclusive(company, taxiExLocation,"T1", FuelConsumption.HIGH, 10);
         
         // Starting position for the taxiSh.
         
         // Locations for the passengerNv.
         
 
-        passengerNv = new PassengerNoVip(pickup2, destination2,"Rosario Parrales", 1000);
-        taxiSh = new TaxiShuttle(company, taxiShLocation,"T2");
+        passengerNv = new PassengerNoVip(pickup2, destination2,"Rosario Parrales", 10, 1000, Reliable.HIGH);
+        taxiSh = new TaxiShuttle(company, taxiShLocation,"T2", FuelConsumption.LOW, 6);
     }
 
     /**

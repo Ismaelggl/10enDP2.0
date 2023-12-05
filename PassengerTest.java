@@ -35,15 +35,15 @@ public class PassengerTest
     {
         pickup = new Location(2,2);
         destination = new Location(5,1);
-        passenger1v = new PassengerVip(pickup, destination, "Amador Rivas",1000);
+        passenger1v = new PassengerVip(pickup, destination, "Amador Rivas", 50, 1000, Reliable.HIGH);
         passenger1v.setTaxiName("Xavineta");
         
-        passenger2nv = new PassengerNoVip(pickup, destination, "Maite Figueroa",300);
+        passenger2nv = new PassengerNoVip(pickup, destination, "Maite Figueroa", 30, 300, Reliable.LOW);
         passenger2nv.setTaxiName("Submarino amarillo");
         
         transportc = new TransportCompany("Ejemplo");
         
-        taxi1 = new TaxiShuttle(transportc, destination, "Submarino amarillo");
+        taxi1 = new TaxiShuttle(transportc, destination, "Submarino amarillo", FuelConsumption.MEDIUM, 9);
         taxi1.incrementValuation(30);
         
     }

@@ -205,7 +205,7 @@ public class TransportCompany
             passengers.get(0).setTaxiName(taxi.getName() );
         }
     }
-    public void ShowFinalInfo(){
+    public void showFinalInfo(){
         Collections.sort(vehicles, new ComparadorIdlCountTaxi());
         vehicles.get(0).showFinalInfo();
     }
