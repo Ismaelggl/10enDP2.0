@@ -40,7 +40,7 @@ public class TaxiDemoFinal
         demoIni.run();
 
         //Demo con varios personajes y taxis
-        //DemoAvanzadaFinal demoAvan = new DemoAvanzadaFinal();
-        //demoAvan.run();
+        DemoAvanzadaFinal demoAvan = new DemoAvanzadaFinal();
+        demoAvan.run();
     }
 }
