@@ -38,7 +38,7 @@ public abstract class Taxi
      * @param location The vehicle's starting point. Must not be null.
      * @throws NullPointerException If company or location is null.
      */
-    public Taxi(TransportCompany company, Location location, String name, FuelConsumption fuelConsumption, int valuation)
+    public Taxi(TransportCompany company, Location location, String name, FuelConsumption fuelConsumption)
     {
         if(company == null) {
             throw new NullPointerException("company");
@@ -154,7 +154,7 @@ public abstract class Taxi
             throw new NullPointerException();
         }
     }
-
+    
     /**
      * Get the target location.
      * @return Where this vehicle is currently headed, or null
@@ -186,11 +186,10 @@ public abstract class Taxi
     
     /**
      * Set the occupation of the taxi.
-     * @return occupation The occupation of the taxi
      */
     
-    public void setOccupation(int occupation){
-        this.occupation = occupation;
+    public void setOccupation(int occupation1){
+        this.occupation = occupation1;
     }
     /**
      * Has the vehicle a target Location?
@@ -240,7 +239,7 @@ public abstract class Taxi
      */
     public boolean isFree()
     {
-        return passengers.size() < this.occupation;
+        return passengers.isEmpty();
     }
 
     /**

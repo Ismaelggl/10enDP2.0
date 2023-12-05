@@ -13,10 +13,10 @@ public class TaxiExclusive extends Taxi implements SerPopularEnRedes
     /**
      * Constructor for objects of class TaxiExclusive
      */
-    public TaxiExclusive(TransportCompany company, Location location, String name, FuelConsumption fuelConsumption, int idleCount)
+    public TaxiExclusive(TransportCompany company, Location location, String name, FuelConsumption fuelConsumption, int weight)
     {
-        super(company, location, name,fuelConsumption, idleCount);
-        weight = 0;
+        super(company, location, name,fuelConsumption);
+        setWeight(weight);
         popularidad = 6;
         occupation = 1;
     }
@@ -35,6 +35,13 @@ public class TaxiExclusive extends Taxi implements SerPopularEnRedes
      */
     public int getWeight(){
         return weight;
+    }
+    
+    /**
+     * Set the taxi weight.
+     */
+    public void setWeight(int weight1){
+        weight = weight1;
     }
     
     /**
@@ -66,6 +73,9 @@ public class TaxiExclusive extends Taxi implements SerPopularEnRedes
                   modificarPopularidad();
                   notifyPassengerArrival(getPassenger());
                   offloadPassenger();
+                  if(getPassenger() != null){
+                    setTargetLocation(getPassenger().getPickup());
+                    }
                   incrementPassengersTransported();
                  }
                  else{
