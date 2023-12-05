@@ -58,6 +58,7 @@ public class TransportCompany
             passenger.getPickup()  + " to " + passenger.getDestination() );
             passenger.act(vehicle);//Puntua al taxi
             //Eliminamos el pasajero
+            vehicle.offloadPassenger();
             List<Passenger> passengers = assignments.getOrDefault(vehicle, new ArrayList<>());
             assignments.remove(vehicle);//Eliminamos temporalmente la asignacion
             passengers.remove(0);
@@ -202,7 +203,6 @@ public class TransportCompany
             System.out.println("<<<< "+taxi + " picks up " + passengers.get(0).getName());
             //Se elimina la asignacion
             assignments.remove(taxi);
-            passengers.get(0).setTaxiName(taxi.getName() );
         }
     }
     public void showFinalInfo(){
