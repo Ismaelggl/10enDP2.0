@@ -63,6 +63,9 @@ public class TransportCompany
             Passenger next=vehicle.getPassenger();
             if(next != null)
             vehicle.setTargetLocation(next.getDestination());
+            /*if (vehicle.getPassenger() != null){
+                vehicle.setTargetLocation(vehicle.getPassenger().getPickup());
+            }*/
         }
     }
 
@@ -114,12 +117,12 @@ public class TransportCompany
         //Ponemos la localizacion objetivo a los taxis para ordenar los taxis por cercania
         while(it.hasNext()){
            Taxi aux = it.next();
-            if(aux.isFree() && passenger.getCreditCard()>20000 ){
+            if( passenger.getCreditCard()>20000 ){
                 aux.setPickupLocation(passenger.getPickup()); 
                 //aux.addPassenger(passenger);
-                aux.setOccupation(1);
+                //aux.setOccupation(1);
             }else{ //Si passengerNoVIP
-                  if(aux.isFree() && passenger.getCreditCard()<=20000
+                  if( passenger.getCreditCard()<=20000
                   && aux.passengersTransported() < aux.getOccupation() )
                     aux.setPickupLocation(passenger.getPickup()) ;
                     //aux.addPassenger(passenger);
@@ -133,14 +136,14 @@ public class TransportCompany
         it = this.vehicles.iterator();
         while (it.hasNext() && !salir){
                 aux = it.next();
-                if(aux.isFree() && passenger.getCreditCard()>20000 && aux.getOccupation() == 1){
+                if( passenger.getCreditCard()>20000 && aux.getOccupation() == 1){
                     salir = true;
                     aux.setPickupLocation(passenger.getPickup());
                     aux.addPassenger(passenger);
                     taxi = aux;
                     
                  }else{ //Si passengerNoVIP
-                  if(aux.isFree() && passenger.getCreditCard()<20000 &&
+                  if( passenger.getCreditCard()<20000 &&
                   aux.passengersTransported() < aux.getOccupation() && aux.getOccupation() != 1){
                     salir = true;
                     aux.setPickupLocation(passenger.getPickup());
