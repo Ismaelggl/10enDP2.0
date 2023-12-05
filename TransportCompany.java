@@ -58,11 +58,9 @@ public class TransportCompany
             passenger.getPickup()  + " to " + passenger.getDestination() );
             passenger.act(vehicle);//Puntua al taxi
             //Eliminamos el pasajero
+            //vehicle.offloadPassenger();
             //Si hay más pasajeros asignamos el siguiente
-            if(!passengers.isEmpty()){
-                vehicle.setTargetLocation(passengers.get(0).getDestination());
-                
-            }
+            
         }
     }
 
@@ -114,11 +112,15 @@ public class TransportCompany
         //Ponemos la localizacion objetivo a los taxis para ordenar los taxis por cercania
         while(it.hasNext()){
            Taxi aux = it.next();
-            if(aux.isFree() && assignments.get(aux) == null){
+            if(aux.isFree() && passenger.getCreditCard()>20000 ){
                 aux.setPickupLocation(passenger.getPickup()); 
+                //aux.addPassenger(passenger);
+                aux.setOccupation(1);
             }else{ //Si passengerNoVIP
-                  if(passenger.getCreditCard()<=20000 && aux.passengersTransported() < aux.getOccupation())
-                    aux.setPickupLocation(passenger.getPickup());
+                  if(aux.isFree() && passenger.getCreditCard()<=20000
+                  && aux.passengersTransported() < aux.getOccupation() )
+                    aux.setPickupLocation(passenger.getPickup()) ;
+                    //aux.addPassenger(passenger);
                 }
         }
         // Creamos un nuevo iterador para recorrer nuevamente la lista ordenada
@@ -129,24 +131,32 @@ public class TransportCompany
         it = this.vehicles.iterator();
         while (it.hasNext() && !salir){
                 aux = it.next();
-                if(aux.isFree() && assignments.get(aux) == null){
+                if(aux.isFree() && passenger.getCreditCard()>20000 && aux.getOccupation() == 1){
                     salir = true;
-                    taxi = aux;
                     aux.setPickupLocation(passenger.getPickup());
+                    aux.addPassenger(passenger);
+                    taxi = aux;
+                    
                  }else{ //Si passengerNoVIP
-                  if(passenger.getCreditCard()<20000 &&
-                  aux.passengersTransported() < aux.getOccupation()){
+                  if(aux.isFree() && passenger.getCreditCard()<20000 &&
+                  aux.passengersTransported() < aux.getOccupation() && aux.getOccupation() != 1){
                     salir = true;
-                    taxi = aux;
                     aux.setPickupLocation(passenger.getPickup());
+                    aux.addPassenger(passenger);
+                    taxi = aux;
+                    
                   }
                 }
         }
         //Reseteamos localizaciones de taxis libres
+        it = this.vehicles.iterator();
         while (it.hasNext()){
             aux=it.next();
-            if (assignments.get(aux) == null){
+            if (assignments.get(aux) == null && taxi != aux){
                 aux.setPickupLocation(null);
+            }
+            else if (taxi != aux){
+                aux.resetTargetLocation();
             }
         }
         //Sino hay taxis libres devolvemos nulo para poder comprobralo
@@ -192,12 +202,17 @@ public class TransportCompany
     public void arrivedAtPickup(Taxi taxi)
     {
         // Obtén el pasajero asignado al taxi
-        List<Passenger> passengers = assignments.getOrDefault(taxi, new ArrayList<>());
+        List<Passenger> passengers = assignments.getOrDefault(taxi, new ArrayList<>() );
+        
         if(taxi.getLocation().equals(passengers.get(0).getPickup()) ){
             taxi.pickup(passengers.get(0));
             System.out.println("<<<< "+taxi + " picks up " + passengers.get(0).getName());
             //Se elimina la asignacion
-            assignments.remove(taxi);
+            //passengers = assignments.remove(taxi);
+            assignments.remove(passengers.get(0));
+            passengers.remove(0);
+            //taxi.removePassenger();
+            assignments.put(taxi, passengers);
         }
     }
     public void showFinalInfo(){

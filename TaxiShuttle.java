@@ -32,11 +32,15 @@ public class TaxiShuttle extends Taxi
                  if(getPassenger().getDestination().equals(getLocation()) ){
                   notifyPassengerArrival(getPassenger());
                   offloadPassenger();
+                  if(getPassenger() != null){
+                    setTargetLocation(getPassenger().getPickup());
+                    }
                   incrementPassengersTransported();
                  }
-              }
-              else{
+                 else{
                 notifyPickupArrival();
+                } 
+              
               }
             }
         }

@@ -55,7 +55,7 @@ public abstract class Taxi
         this.passengers = new TreeSet<> (new ComparadorArrivalTimePassenger());
         this.passengersTransported = 0;  
         this.valuation = valuation;
-        this.occupation = 1;
+        this.occupation = 4;
         this.fuelConsumption = fuelConsumption;
     }
 
@@ -106,6 +106,28 @@ public abstract class Taxi
     public int getOccupation()
     {
         return occupation;
+    }
+    
+    /**
+     * Adds a passengers to the TreeSet.
+     */
+    public void addPassenger(Passenger passenger){
+        passengers.add(passenger);
+        resetTargetLocation();
+    }
+    
+    /**
+     * Removes the first passenger of the TreeSet.
+     */
+    public void removePassenger(){
+        passengers.pollFirst();
+    }
+    
+    /**
+     * Sets the target location to the first passenger destination.
+     */
+    public void resetTargetLocation(){
+        setTargetLocation(passengers.first().getPickup());
     }
     
     /**
@@ -163,6 +185,14 @@ public abstract class Taxi
     }
     
     /**
+     * Set the occupation of the taxi.
+     * @return occupation The occupation of the taxi
+     */
+    
+    public void setOccupation(int occupation){
+        this.occupation = occupation;
+    }
+    /**
      * Has the vehicle a target Location?
      * @return Whether or not this vehicle has a target Location.
      */
@@ -210,7 +240,7 @@ public abstract class Taxi
      */
     public boolean isFree()
     {
-        return passengers.isEmpty();
+        return passengers.size() < this.occupation;
     }
 
     /**
