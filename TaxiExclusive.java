@@ -86,4 +86,9 @@ public class TaxiExclusive extends Taxi implements SerPopularEnRedes
             }
         }
     }
+    
+    public String showFinalInfo()
+    {
+        return super.showFinalInfo() + " - popularity: " + popularidad;
+    }
 }
