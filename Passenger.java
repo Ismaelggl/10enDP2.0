@@ -182,7 +182,7 @@ public abstract class Passenger
      */
     public void showFinalInfo()
     {
-        System.out.println( getClass() + getName() + " in " + destination.toString() + 
+        System.out.println( getClass() +" " + getName() + " in " + destination.toString() + 
             " transported by: " + taxiName + " with " + creditCard
             +" money in the credit card");
     }

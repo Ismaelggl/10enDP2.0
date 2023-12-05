@@ -333,7 +333,7 @@ public abstract class Taxi
      */
     public String showFinalInfo()
     {
-        return  getClass() + name +" at "+ location.toString()+
+        return  getClass() +" " + name +" at "+ location.toString()+
         " -  passengers transported: "+ passengersTransported +
         " - non active for: "+ idleCount + " times - valuation: " + valuation
         + " - consumption: " + obtainConsumption(); 
