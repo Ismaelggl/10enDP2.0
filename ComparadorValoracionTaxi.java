@@ -1,7 +1,7 @@
 import java.util.Comparator;
 
 /**
- * Write a description of class ComparadorValoracionTaxi here.
+ * Compare a taxis by his valoration.
  * 
  * @author (your name) 
  * @version (a version number or a date)

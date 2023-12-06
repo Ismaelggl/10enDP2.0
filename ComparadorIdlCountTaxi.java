@@ -1,7 +1,7 @@
 import java.util.Comparator;
 
 /**
- * Write a description of class ComparadorIdlCount here.
+ * Compare a taxis by how often the vehicle has nothing to do.
  * 
  * @author (your name) 
  * @version (a version number or a date)

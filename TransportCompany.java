@@ -53,18 +53,12 @@ public class TransportCompany
     Passenger passenger)
     {
         if(vehicle.getLocation().equals(passenger.getDestination() )){
-            System.out.println(">>>>" + vehicle  +
-            " offloads  " + passenger );
+            System.out.println(">>>>" + vehicle  + " offloads  " + passenger );
             passenger.act(vehicle);//Puntua al taxi
-            //Eliminamos el pasajero
-            //vehicle.offloadPassenger();
             //Si hay más pasajeros asignamos el siguiente
             Passenger next=vehicle.getPassenger();
             if(next != null)
             vehicle.setTargetLocation(next.getDestination());
-            /*if (vehicle.getPassenger() != null){
-                vehicle.setTargetLocation(vehicle.getPassenger().getPickup());
-            }*/
         }
     }
 
@@ -119,13 +113,9 @@ public class TransportCompany
            Taxi aux = it.next();
             if( passenger.getCreditCard()>20000 ){
                 aux.setPickupLocation(passenger.getPickup()); 
-                //aux.addPassenger(passenger);
-                //aux.setOccupation(1);
             }else{ //Si passengerNoVIP
-                  if( passenger.getCreditCard()<=20000
-                  && aux.passengersTransported() < aux.getOccupation() )
+                  if( passenger.getCreditCard()<=20000 )
                     aux.setPickupLocation(passenger.getPickup()) ;
-                    //aux.addPassenger(passenger);
                 }
         }
         // Creamos un nuevo iterador para recorrer nuevamente la lista ordenada
@@ -141,7 +131,6 @@ public class TransportCompany
                     aux.setPickupLocation(passenger.getPickup());
                     aux.addPassenger(passenger);
                     taxi = aux;
-                    
                  }else{ //Si passengerNoVIP
                   if( passenger.getCreditCard()<=20000 && aux.getOccupation() != 1 && (!assignments.containsKey(aux) || assignments.get(aux).size() < aux.getOccupation())) 
                   {
@@ -212,17 +201,18 @@ public class TransportCompany
             Passenger passenger = passengers.pollFirst();
             taxi.pickup(passenger);
             System.out.println("<<<< "+taxi + " picks up " + passenger.getName());
-            //Se elimina la asignacion
-            //assignments.remove(passenger);
-            //passengers.remove(0);
-            //taxi.removePassenger();
             assignments.put(taxi, passengers);
         }
     }
+    
+    /**
+     * Return details of the company.
+     */
     public void showFinalInfo(){
         System.out.println("-->> Taxi(s) with less time not active <<--");
         Collections.sort(vehicles, new ComparadorIdlCountTaxi());
         System.out.println(vehicles.get(0).showFinalInfo());
+        
         System.out.println("-->> Taxi(s) with highest evaluation <<--");
         Collections.sort(vehicles, new ComparadorValoracionTaxi());
         System.out.println(vehicles.get(vehicles.size() - 1).showFinalInfo());    
