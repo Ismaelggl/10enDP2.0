@@ -39,27 +39,6 @@ public abstract class Passenger
         this.creditCard = creditCard;
         this.reliable = reliable;
     }
-    
-    /**
-     * Constructor for objects of class Passenger
-     * @param pickup The pickup location, must not be null.
-     * @param destination The destination location, must not be null.
-     * @param name The passenger's name
-     * @param taxiName The taxi's name
-     * @throws NullPointerException If either location is null.
-     */
-    public Passenger(Location pickup, Location destination, String name, String taxiName){ // PRIV: Creo que este constructor no se usa
-        if(pickup == null) {
-            throw new NullPointerException("Pickup location");
-        }
-        if(destination == null) {
-            throw new NullPointerException("Destination location");
-        }
-        this.pickup = pickup;
-        this.destination = destination;
-        this.name = name;
-        this.taxiName = taxiName;
-    }
 
     /**
      * @return The name of the passenger.

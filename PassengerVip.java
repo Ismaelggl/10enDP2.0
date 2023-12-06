@@ -17,7 +17,7 @@ public class PassengerVip extends Passenger
     }
     
     /**
-     * Decrement creditCard of passengers to 615 
+     * Decrement creditCard of passengers to 610 
      */
     public void pay()
     {
@@ -29,6 +29,9 @@ public class PassengerVip extends Passenger
      * Increment his valuation in 15 and double his valuation
      */
     public int calculateEvaluationValue(Taxi taxi){
+        if(taxi==null){
+            throw new NullPointerException("taxi");
+        }
         taxi.incrementValuation(15);
         return super.calculateEvaluationValue(taxi);
     }

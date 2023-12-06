@@ -28,6 +28,9 @@ public class PassengerNoVip extends Passenger
      * Double his valuation
      */
     public int calculateEvaluationValue(Taxi taxi){
+        if(taxi == null){
+            throw new NullPointerException("taxi");
+        }
         return super.calculateEvaluationValue(taxi);
     }
 }

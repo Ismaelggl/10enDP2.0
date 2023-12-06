@@ -272,6 +272,8 @@ public abstract class Taxi
         passengersTransported++;
         passenger.setTaxiName(this.getName());
         this.passengers.add(passenger);
+        }else{
+            throw new NullPointerException("passenger");
         }
     }   
     
