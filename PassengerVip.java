@@ -21,7 +21,7 @@ public class PassengerVip extends Passenger
      */
     public void pay()
     {
-        decrementCreditCard(600+15);
+        decrementCreditCard(600+10);
     }
     
     /**

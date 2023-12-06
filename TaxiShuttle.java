@@ -27,7 +27,7 @@ public class TaxiShuttle extends Taxi
         }
         else{
            this.setLocation(getLocation().nextLocation(getTargetLocation()));
-           System.out.println("@@@ Taxi: " + getName() + " moving to: " + getLocation().getX() + " - " + getLocation().getY());
+           System.out.println("@@@ Taxi: " + getName() + " moving to: " + getLocation().getX() + "," + getLocation().getY());
            if(getTargetLocation().equals(getLocation()) ){
               if (getPassenger() != null){
                  if(getPassenger().getDestination().equals(getLocation()) ){

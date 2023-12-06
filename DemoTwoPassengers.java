@@ -116,7 +116,8 @@ public class DemoTwoPassengers
         System.out.println("-->> Taxis of the company <<--");
 
         for(Taxi  taxi : vehicles) {
-            System.out.println(taxi);
+            System.out.print(taxi);
+            System.out.println(" " + taxi.getFuel());
         }
         System.out.println("-->> Passengers requesting taxi <<--");
         Collections.sort(passengers, new ComparadorArrivalTimePassenger());

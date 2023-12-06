@@ -7,8 +7,8 @@
  */
 public enum Reliable
 {
-    LOW("LOW",5),
-    HIGH("HIGH",10);
+    LOW("Low",5),
+    HIGH("High",10);
     
     private final String nombre;
     private final int valor;
@@ -28,6 +28,6 @@ public enum Reliable
     @Override
     public String toString()
     {
-      return getNombre() + "(" + getValor() + ")"; 
+      return "<reliable: " + getNombre() + " (value: " + getValor() + ")>"; 
     }
 }

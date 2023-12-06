@@ -53,9 +53,8 @@ public class TransportCompany
     Passenger passenger)
     {
         if(vehicle.getLocation().equals(passenger.getDestination() )){
-            System.out.println(">>>> Taxi " + vehicle.getName() +" at " + vehicle.getLocation() +
-            " offloads Passenger " + passenger.getName() + " travelling from " +
-            passenger.getPickup()  + " to " + passenger.getDestination() );
+            System.out.println(">>>>" + vehicle  +
+            " offloads  " + passenger );
             passenger.act(vehicle);//Puntua al taxi
             //Eliminamos el pasajero
             //vehicle.offloadPassenger();
@@ -86,6 +85,7 @@ public class TransportCompany
     }
 
     /**
+     * Add a new taxi in the company.
      * @param Add the new Vehicle.
      */
     public void addVehicle(Taxi vehicle)
@@ -136,20 +136,20 @@ public class TransportCompany
         it = this.vehicles.iterator();
         while (it.hasNext() && !salir){
                 aux = it.next();
-                if( passenger.getCreditCard()>20000 && aux.getOccupation() == 1){
+                if( passenger.getCreditCard()>20000 && aux.getOccupation() == 1 && !assignments.containsKey(aux) ){
                     salir = true;
                     aux.setPickupLocation(passenger.getPickup());
                     aux.addPassenger(passenger);
                     taxi = aux;
                     
                  }else{ //Si passengerNoVIP
-                  if( passenger.getCreditCard()<20000 &&
-                  aux.passengersTransported() < aux.getOccupation() && aux.getOccupation() != 1){
+                  if( passenger.getCreditCard()<=20000 && aux.getOccupation() != 1 && (!assignments.containsKey(aux) || assignments.get(aux).size() < aux.getOccupation())) 
+                  {
                     salir = true;
                     aux.setPickupLocation(passenger.getPickup());
                     aux.addPassenger(passenger);
                     taxi = aux;      
-                  }
+                  }              
                 }
         }
         //Reseteamos localizaciones de taxis libres
@@ -194,6 +194,7 @@ public class TransportCompany
             taxi.setTargetLocation(currentPassengers.first().getPickup());
             // Asocia la lista actualizada de pasajeros con el taxi en el mapa
             assignments.put(taxi, currentPassengers); 
+            System.out.println("<<<<" + taxi + " go to pick up passenger " + passenger.getName() + " at " +passenger.getPickup());
             }
         return salir;
     }
@@ -219,9 +220,11 @@ public class TransportCompany
         }
     }
     public void showFinalInfo(){
+        System.out.println("-->> Taxi(s) with less time not active <<--");
         Collections.sort(vehicles, new ComparadorIdlCountTaxi());
-        vehicles.get(0).showFinalInfo();
+        System.out.println(vehicles.get(0).showFinalInfo());
+        System.out.println("-->> Taxi(s) with highest evaluation <<--");
         Collections.sort(vehicles, new ComparadorValoracionTaxi());
-        vehicles.get(0).showFinalInfo();    
+        System.out.println(vehicles.get(vehicles.size() - 1).showFinalInfo());    
     }
 }

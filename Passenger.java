@@ -139,8 +139,9 @@ public abstract class Passenger
      */
     public String toString()
     {
-        return "Passenger "+getName()+" travelling from " +
-        pickup + " to " + destination;
+        return getClass().getName() + " " + getName()+" travelling from " +
+        pickup + " to " + destination + " arrival time: " + arrivalTime
+        + " money in the credit card: " + creditCard + " " + reliable ;
     }
     
     /**
@@ -158,7 +159,7 @@ public abstract class Passenger
      */
     public int calculateEvaluationValue(Taxi taxi)
     {
-        taxi.incrementValuation(taxi.getValuation());
+        taxi.incrementValuation(reliable.getValor()*2);
         return taxi.getValuation();
     }
     
@@ -182,7 +183,7 @@ public abstract class Passenger
      */
     public void showFinalInfo()
     {
-        System.out.println( getClass().getSimpleName() +" "+ name + " in " + destination.toString() + 
+        System.out.println( getClass().getName() +" "+ name + " in " + destination.toString() + 
             " transported by: " + taxiName + " with " + creditCard
             +" money in the credit card");
     }

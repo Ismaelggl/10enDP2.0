@@ -26,7 +26,7 @@ public class TaxiExclusive extends Taxi implements SerPopularEnRedes
      * @return The fuel consumption of the taxi.
      */
     public int obtainConsumption(){
-        return (getFuel().getValor())*getInitialLocation().distance(getLocation());
+        return (getFuel().getValor())*getInitialLocation().distance(getLocation())*(weight/2);
     }
     
      /**
@@ -66,7 +66,7 @@ public class TaxiExclusive extends Taxi implements SerPopularEnRedes
         }
         else{
            this.setLocation(getLocation().nextLocation(getTargetLocation()));
-           System.out.println("@@@ Taxi: " + getName() + " moving to: " + getLocation().getX() + " - " + getLocation().getY());
+           System.out.println("@@@ Taxi: " + getName() + " moving to: " + getLocation().getX() + "," + getLocation().getY());
            if(getTargetLocation().equals(getLocation()) ){
               if (getPassenger() != null){
                  if(getPassenger().getDestination().equals(getLocation()) ){

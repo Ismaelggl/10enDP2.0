@@ -55,7 +55,7 @@ public abstract class Taxi
         this.passengers = new TreeSet<> (new ComparadorArrivalTimePassenger());
         this.passengersTransported = 0;  
         this.valuation = valuation;
-        this.occupation = 4;
+        this.occupation = 1;
         this.fuelConsumption = fuelConsumption;
     }
 
@@ -230,7 +230,8 @@ public abstract class Taxi
      */
     public String toString()
     {
-        return getClass().getName() + " " +getName()+" at " + getLocation();
+        return getClass().getName() + " " +getName()+" at " + getLocation() 
+        + " occupation " + occupation;
     }
 
     /**
@@ -268,6 +269,7 @@ public abstract class Taxi
     {   
         if(passenger != null){
         this.targetLocation = passenger.getDestination();
+        passengersTransported++;
         passenger.setTaxiName(this.getName());
         this.passengers.add(passenger);
         }
@@ -279,6 +281,7 @@ public abstract class Taxi
     public void offloadPassenger()
     {
         this.targetLocation = null;
+        passengersTransported--;       
         this.passengers.pollFirst();
     }
 
@@ -317,7 +320,7 @@ public abstract class Taxi
      */
     public void incrementValuation(int n)
     {
-        valuation +=n;   
+        valuation = valuation + n;   
     }
     
     /**
@@ -325,7 +328,7 @@ public abstract class Taxi
      */   
     public int getValuation(){
         return valuation;
-    }
+    }    
     
      /**
      * Return details of the taxi, such as where it is.

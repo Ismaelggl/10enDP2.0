@@ -7,9 +7,9 @@
  */
 public enum FuelConsumption
 {
-    HIGH ("HIGH", 8),
-    MEDIUM ("MEDIUM", 6),
-    LOW ("LOW", 4);
+    HIGH ("High", 8),
+    MEDIUM ("Medium", 6),
+    LOW ("Low", 4);
     
     private final String nombre;
     private final int valor;
@@ -29,6 +29,6 @@ public enum FuelConsumption
     @Override
     public String toString()
     {
-      return getNombre() + "(" + getValor() + ")"; 
+      return "<fuel consumption: " + getNombre() + " (value: " + getValor() + ")>"; 
     }
 }
