@@ -79,8 +79,8 @@ public class TaxiExclusive extends Taxi implements SerPopularEnRedes
                   incrementPassengersTransported();
                  }
                  else{
-                notifyPickupArrival();
-              }
+                     notifyPickupArrival();
+                 }
               }
               
             }

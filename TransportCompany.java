@@ -56,7 +56,7 @@ public class TransportCompany
             System.out.println(">>>>" + vehicle  + " offloads  " + passenger );
             passenger.act(vehicle);//Puntua al taxi
             //Si hay más pasajeros asignamos el siguiente
-            Passenger next=vehicle.getPassenger();
+            Passenger next = vehicle.getPassenger();
             if(next != null)
             vehicle.setTargetLocation(next.getDestination());
         }
