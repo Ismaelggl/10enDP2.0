@@ -50,21 +50,12 @@ public class TaxiTest
         destination2 = new Location(9, 8);
         
         company = new TransportCompany("Compañía Taxis Cáceres");
-        // Starting position for the taxiEx.
-        
-        // Locations for the passengerV.
       
         passengerV = new PassengerVip(pickup1, destination1,"Ana Botín", 30, 25000, Reliable.LOW);
         taxiEx = new TaxiExclusive(company, taxiExLocation,"T1", FuelConsumption.HIGH, 10);
-        
-        // Starting position for the taxiSh.
-        
-        // Locations for the passengerNv.
-        
 
         passengerNv = new PassengerNoVip(pickup2, destination2,"Rosario Parrales", 10, 1000, Reliable.HIGH);
         taxiSh = new TaxiShuttle(company, taxiShLocation,"T2", FuelConsumption.LOW, 6);
-        
        
     }
 
@@ -173,14 +164,14 @@ public class TaxiTest
         
         assertEquals(true, taxiEx.isFree());
         assertEquals(false,taxiEx.hasTargetLocation());
-        // 1st passenger
+        
         company.requestPickup(passengerV);
-        //taxiEx.setTargetLocation(passengerV.getPickup());
+        
         assertEquals(true,taxiEx.hasTargetLocation());
         for(i = 0; i < 5; i++){
             taxiEx.act();
         }
-        //company.arrivedAtPickup(taxiEx);
+        
         assertEquals(false, taxiEx.isFree());
         assertEquals(true,taxiEx.hasTargetLocation());
         
@@ -188,35 +179,14 @@ public class TaxiTest
             taxiEx.act();
         }
         assertEquals(true, taxiEx.isFree());
-        assertEquals(false,taxiEx.hasTargetLocation());
-        
-        /*
-        // 2nd passenger
-        
-        company.requestPickup(passengerNv);
-        //taxiEx.setTargetLocation(passengerNv.getPickup());
-        assertEquals(true,taxiEx.hasTargetLocation());
-        for(i = 0; i < 10; i++){
-            taxiEx.act();
-        }
-        assertEquals(false, taxiEx.isFree());
-        assertEquals(true,taxiEx.hasTargetLocation());
-        
-        for(i = 0; i < 10; i++){
-            taxiEx.act();
-        }
-        assertEquals(true, taxiEx.isFree());
-        assertEquals(false,taxiEx.hasTargetLocation());
-        */
-       
-       
+        assertEquals(false,taxiEx.hasTargetLocation());       
     }
   
     
-      /* Test that a Taxi Shuttle picks up and delivers a passenger within
+    /** 
+     * Test that a Taxi Shuttle picks up and delivers a passenger within
      * a reasonable number of steps.
      */
-    
     @Test
     public void testDeliveryTaxiShuttle()
     {
@@ -240,6 +210,58 @@ public class TaxiTest
         }
         assertEquals(true, taxiSh.isFree());
         assertEquals(false,taxiSh.hasTargetLocation());
+        
+    }
+    
+    
+    /** 
+     * Test 
+     * 
+     */
+    @Test
+    public void testObtainComsumption()
+    {
+        // Taxi Exclusive
+        int i;
+        company.addVehicle(taxiEx);
+        company.addPassenger(passengerV);
+        company.requestPickup(passengerV);
+        
+        for(i = 0; i < 5; i++){
+            taxiEx.act();
+        }
+        
+        assertEquals(200, taxiEx.obtainConsumption());
+        
+        // Taxi Shuttle
+        
+        company.addVehicle(taxiSh);
+        company.addPassenger(passengerNv);
+        company.requestPickup(passengerNv);
+        
+        for(i = 0; i < 5; i++){
+            taxiSh.act();
+        }
+        
+        assertEquals(4, taxiSh.obtainConsumption());
+    }
+    
+     /** 
+     * Test 
+     * 
+     */
+    @Test
+    public void testGetPassenger()
+    {
+        // Taxi Exclusive
+        
+        taxiEx.addPassenger(passengerV);
+        assertEquals(passengerV, taxiEx.getPassenger());
+        
+        // Taxi Shuttle
+        
+        taxiSh.addPassenger(passengerNv);
+        assertEquals(passengerNv, taxiSh.getPassenger());
         
     }
     

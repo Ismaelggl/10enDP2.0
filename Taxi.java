@@ -54,7 +54,7 @@ public abstract class Taxi
         this.name = name;
         this.passengers = new TreeSet<> (new ComparadorArrivalTimePassenger());
         this.passengersTransported = 0;  
-        this.valuation = valuation;
+        this.valuation = valuation; //priv y esto? 
         this.occupation = 1;
         this.fuelConsumption = fuelConsumption;
     }
@@ -109,7 +109,7 @@ public abstract class Taxi
     }
     
     /**
-     * Adds a passengers to the TreeSet.
+     * Adds a passenger to the TreeSet.
      */
     public void addPassenger(Passenger passenger){
         passengers.add(passenger);

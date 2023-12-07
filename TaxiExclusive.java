@@ -47,7 +47,6 @@ public class TaxiExclusive extends Taxi implements SerPopularEnRedes
     /**
      * Calculates the new popularity given from the passenger.
      */
-    //PRIV: He quitado el override (Samuel)
     public void modificarPopularidad(){
         if (getPassenger().getCreditCard() > 20000){
             popularidad += 4;
